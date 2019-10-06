@@ -3,6 +3,9 @@ image: Visual Studio 2019
 environment:
   CMAKE_PREFIX_PATH: C:\Qt\5.12\msvc2017\lib\cmake
 
+init:
+  - ps: iex ((new-object net.webclient).DownloadString('https://raw.githubusercontent.com/appveyor/ci/master/scripts/enable-rdp.ps1'))
+
 install:
   - git submodule update --init --recursive
 
@@ -15,3 +18,6 @@ build_script:
 artifacts:
   - path: build/install
     name: net64-coop-%APPVEYOR_REPO_COMMIT%
+
+on_finish:
+  - ps: $blockRdp = $true; iex ((new-object net.webclient).DownloadString('https://raw.githubusercontent.com/appveyor/ci/master/scripts/enable-rdp.ps1'))
